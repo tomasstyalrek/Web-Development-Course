@@ -71,3 +71,37 @@ Ahora, el tema con todo esto, es que cada vez que vamos a subir algo al reposito
 
 Pero lo que se puede hacer es que GitHub reconozca a tu computadora como tuya y te deje hacer los push y pull con libertad. Para esto vamos a crear una **SSH key**.
 
+
+
+#### SSH Keys
+
+##### Using SSH over HTTPS
+
+GitHub lo que hace es pedir autenticacion del usuario antes de hacer cualquier cambio en el repositorio remoto. Esto tiene sentido ya que si no fuera asi, cualquiera podria hacer lo que quiera. Pero al mismo tiempo se vuelve tedioso en poco tiempo, tener que copiar tantas veces lo mismo. 
+
+Lo que se puede hacer es crear una key local de SSH, que es un protocolo que ya vimos, para envio de informacion encriptada, y pasarsela a GitHub. De esta manera nos ahorramos la autenticacion esa.
+
+##### Creating a SSH Key
+
+1. Open up Terminal.
+2. Anywhere in Terminal paste the following `ssh-keygen -t rsa -b 4096 -C "PUT YOUR EMAIL HERE"` and replace "PUT YOUR EMAIL HERE" with the email you used to sign up with GitHub.
+3. Once you are prompted with `Enter a file in which to save the key (/Users/you/.ssh/id_rsa): [Press enter]` press enter.
+4. You will then be prompted to enter a passphrase. **Just press enter here**
+5. You will then be prompted to enter a passphrase again. **Just press enter here as well**
+6. Paste the following in terminal: `eval "$(ssh-agent -s)"`. If you do not see a `pid` number, start from the first step again.
+7. Paste the following in terminal: `ssh-add ~/.ssh/id_rsa`. if you see an error message, start from the first step again.
+8. Paste the following in terminal `pbcopy < ~/.ssh/id_rsa.pub`.
+9. Head over to your GitHub account (make sure you sign in).
+10. In the top right corner of any page, click your profile photo, then click Settings.
+11. In the user settings sidebar, click SSH and GPG keys.
+12. Click New SSH key or Add SSH key.
+13. In the "Title" field, add a descriptive label for the new key. For example, if you're using a personal Mac, you might call this key "Personal MacBook Air".
+14. Paste your key into the "Key" field. (you can just right click and click paste or use a keyboard shortcut. The previous command `pbcopy` did the copying for you).
+15. Click Add SSH key.
+16. If prompted, confirm your GitHub password.
+17. Anywhere in Terminal, type `ssh -T git@github.com` and if you see "Successfully authenticated" (ignore the rest of the message) you are good to go! If you do not see that, start from the beginning again.
+
+
+
+#### GitHub Workflow
+
