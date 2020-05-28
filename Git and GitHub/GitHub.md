@@ -105,3 +105,92 @@ Lo que se puede hacer es crear una key local de SSH, que es un protocolo que ya 
 
 #### GitHub Workflow
 
+Ya vimos como hacer un **push request**, es decir, pasar un repositorio local a nuestro repositorio remoto. Ahora vamos a seguir con el flujo de trabajo en GitHub.
+
+##### Fork
+
+Discutamos un concepto especifico de GitHub: forking 
+
+Cuando trabajamos con otros en GitHub, a veces no va a ser posible hacer un push al repositorio cuando quieras. Imaginate que no cualquiera te dejaria hacerlo, porque seria un desastre capas, mas que nada en los repositorios de proyectos muy grandes. Entonces lo que tenemos que hacer es una copia del repositorio del otro, y asegurarnos que este bajo nuestro nombre de usuario, asi podemos hacerle un push de codigo a el.
+
+Para practicar el forking, lo vamos a hacer con el repositorio que creo rithmschool para nosotros, que se llama *learn_forking*.
+
+Lo que vamos a hacer es ir arriba a la derecha y clickear en **Fork**.
+
+Hacer fork es simplemente un concepto de GitHub y no esta relacionado a Git. Lo unico que hace es permitirnos crear una copia del repositorio que querramos y guardarlo en nuestra cuenta, para poder hacer lo que queramos con el.
+
+##### Clone
+
+Una vez que le hicimos un fork al repositorio, ahora tenemos que agarrarolo y descargar el codigo en nuestro repositorio local para poder trabajar con el. Y ahora, en vez de hacer un directorio y hacer todo el proceso con *git init*, en cambio podemos usar el comando **git clone**, que acepta un link al repositorio remoto y descarga todo dentro del directorio (y setea todo por nosotros).
+
+Lo que hacemos es ir a nuestro repositorio en GitHub que ya forkeamos, e ir al boton que dice "clone or download". Ahi nos dice si queremos clonar con HTTPS o SSH. Nosotros vamos a elegir SSH, ya que tenemos la key creada ahi, y de otra manera nos pediria credenciales. Entonces, copiamos el link que nos pasa GitHub.
+
+Ahora solo quedaria ir al terminal, y directamente en el home pones:
+
+- **git clone PASTE_URL_HERE**
+
+En donde el PASTE_URL_HERE es el URL que te tiro GitHub. 
+
+Lo que hace esto es crearnos una carpeta llamada de la misma forma que el repositorio. Segun donde estemos parados en el terminal la crea ahi. Y lo que hace es dejar todo listo, con git ya puesto y todo.
+
+Ahora ya tenes el repositorio de forma local, y podes trabajar de forma normal como siempre. Haces add, commit y con *git push origin master* vas actualizando el repositorio remoto.
+
+##### Pull Request
+
+Suponete ahora que estas colaborando con alguien, una organizacion o cuenta de cualquier persona. Para hacerlo primero tuviste que haberle hecho un fork al repositorio remoto ese, y luego clonarlo en tu compu local. 
+
+Ahora suponete que queres hacer un cambio en ese repositorio, queres unir lo que estas haciendo en el repositorio original. El tema es que no lo podes hacer asi nomas, porque no tenes los permisos para hacerlo ya que no sos el propietario de la cuenta. Lo que se puede hacer es solicitar un **pull request** y alguien que posee el permiso lo va a aceptar para que se una lo que hiciste con el original, o bien lo va a rechazar.
+
+Para hacer esto, hay que clickear en el boton que dice "New pull request" y despues en "Create pull request". Despues de eso deberias poder ir a repositorio original y ver tu pull request o "PR". 
+
+Notar que GitHub sabe que la copia que hiciste en tu cuenta del repositorio (el fork) le pertenece a otra cuenta. Por esto es que directamente toma al pull request como para modificar el original.
+
+NOTA: Ahi lo que hice fue añadir un nuevo archivo, prueba.md, que lo cree y lo puse en la carpeta. De ahi le hice add y commit, y luego le mande git push para que lo tire al repositorio que forkeamos. Entonces ahi te aparece en el repositorio. En caso de querer mandarlo al orginal, pones en hacer un pull request.
+
+##### Retrieving Code from GitHub + Setting Upstream
+
+Ahora, que pasa si alguien mas hace un pull request y eso es agregado al repositorio original? Como llevamos todo lo que se puso nuevo a nuestra computadora? Tenemos que hacer el fork y el clone devuelta? Bueno, no, porque vamos a usar un flujo de trabajo diferente y mas simple.
+
+1. Asegurate primero de que este hecho el commit de forma local.
+2. Hace un pull al ultimo codigo que tenes desde GitHub. (desde uno nuevo que llamamos *upstream*)
+3. Ajusta errores de union si los hay.
+4. Hace un push back del codigo a nuestro repositorio origin.
+
+Ahora, que es este nuevo repositorio *upstream* del que hablan? Bueno, nosotros ya tenemos nuestro repositorio que se llama *origin*, que corresponde en este caso al repositorio que forkeamos. O sea, se le llama origin a todo repositorio remoto con el que estemos trabajando, y las cosas se envien directamente a el desde el local. Pero en el caso de que pase esto que decimos, que alguien haga un pull al original, y este cambie, nuestro repositorio origin, el forkeado, no se da cuenta y no se actualiza. Para obtener los nuevos cambios, tenemos que ir para atras al repositorio original.
+
+Lo que se puede hacer es un pull para obtener los ultimos cambios. Pero para hacer esto necesitamos decirle a Git de que repositorio remoto vamos a hacer esto. Entonces vamos a crear un nuevo remoto que se llame **upstream**.
+
+- *git remote add upstream git@github.com:rithmschool/learn_forking.git*
+
+Lo que estas haciendo aca es crear un nuevo alias para el repositorio original que forkeamos. 
+
+Entonces ahora que lo tenemos seteado, podemos ejecutar el comando **git pull upstream master**, y obtenemos el ultimo codigo del repositorio original. Y claro que siempre que hagamos un push con **git push origin master** te lo va a mandar al repositorio forkeado, no al original. Recorda que no podes hacer un push directamente al original, si no que primero va de tu repositorio local al forkeado, y del forqueado se hace un pull request. 
+
+El **git pull** command es una combinacion de dos comandos en realidad, el **git fetch + git merge**. O sea, git fetch va buscar el nuevo codigo que se agrego al upstream (al original), y git merge lo une a tu repositorio local. 
+
+Si te das cuenta, por ejemplo, que el repositorio remoto tiene nuevas branches, podes usar **git fetch** y luego para verlas usas **git branch -a**.
+
+
+
+##### Conclusion: 
+
+Veamos lo que aprendimos hasta ahora. 
+
+Primero vimos como empezar a usar Git. Para crear un nuevo repositorio local con git, usamos git init. Para ver su estado, usamos git status. Para ver el historial, usamos git log. 
+
+Una vez tengamos nuestro directorio inicializado como un repositorio master, podemos empezar a crear archivos e ir añadiendolos o trackeandolos, que es el paso anterior al commiting. Uno puede añadir con git add FILE. Una vez tenemos todo añadido, con git commit los ponemos el area HEAD. Esto significa que ya estan listos para enviar a nuestro repositorio remoto.
+
+Por el lado del repositorio remoto, tenemos que crearlo en GitHub, y de el necesitamos su URL. Entonces lo que hacemos es ir a git, e indicarle cual es nuestro repositorio remoto. Para esto podemos crear un alias con git remote add origin URL. Le ponemos origin al alias por convension. 
+
+Entonces ahora ya lo tenemos registrado al alias, y podemos empujar (push) los archivos que le hicimos commit al repositorio remoto con git push origin master. Si usamos la flag -u, en git push -u origin master, ya nos guarda el push, y en los siguientes solo es necesario hacer git push y lo manda siempre al origin.
+
+Por otro lado, vimos que es un fork. Vendria a ser una copia de un repositorio que no es tuyo, en tu cuenta. Lo copia exactamente como si fuera tuyo ahora, pero guarda al original. De forma que ahora podes trabajar con este repositorio.
+
+En caso de querer tenerlo de forma local, para poder mandar archivos a este repositorio forkeado, tenemos que clonarlo. Entonces vamos a este repositorio forkeado, y ponemos clone or download por SSH. Lo que hace es darnos un link, y con git clone LINK lo clonamos con carpeta y todo seteado al directorio que le decimos en nuestra maquina. Ahora tenemos el mismo repositorio pero de forma local.
+
+Luego, si queremos subir cosas a este, ya lo tenemos como el directorio origin, por lo tanto solo hay que hacer push. 
+
+Pero si queremos poner las cosas en el original, tenemos que, desde github, hacer un pull request y tiene que ser aceptado por el usuario del original.
+
+En caso de que haya cambios en el original, podemos setear otro alias para el mismo. Por convension se le llama upstream. Asi se puede hacer un pull hacia tu repositorio local, sin tener que forkear y clonar devuelta. Asi usando el comando git pull upstream master te actualiza tu repositorio local con lo que esta en el original. Y ahi lo que podes hacer es actualizar el forkeado tuyo con todo lo que te pasaron, haciendo un push.
+
