@@ -1,3 +1,5 @@
 # Web Development Course in Spanish
 
-Este repositorio se va actualizando con el contenido que voy estudiando sobre desarrollo web. La idea es que sea lo mas completo posible. Se va a ir actualizando dia a dia.
+Este es un curso de desarrollo web en español, formado por todo lo que hoy en dia sigo estudiando. Todos los dias se actualiza un poco con nuevo contenido que pertenece a un conjunto de paginas y libros que encuentro por la web. 
+
+Todo lo que leo y aprendo lo voy escribiendo, por eso pense en dejarlo aca en GitHub por si a alguien le sirve.
